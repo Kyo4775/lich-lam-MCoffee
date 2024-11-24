@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch Làm Việc M.Coffe</title>
+</head>
+<body>
+    <h1>Lịch Làm Việc M.Coffe - BIN</h1>
+    <button onclick="addEventsToGoogleCalendar()">Thêm Lịch vào Google Calendar</button>
+
+    <script>
+        function addEventsToGoogleCalendar() {
+            const events = [
+                { date: '2024-11-25', time: '06:00-12:00', shift: 'BIN' },
+                { date: '2024-11-27', time: '14:00-18:00', shift: 'BIN' },
+                { date: '2024-11-28', time: '14:00-18:00', shift: 'BIN' },
+                { date: '2024-12-01', time: '06:00-13:00', shift: 'BIN' }
+            ];
+
+            const googleCalendarUrl = "https://www.google.com/calendar/render?action=TEMPLATE";
+
+            events.forEach(event => {
+                if (event.shift === 'BIN') {
+                    const startDateTime = new Date(event.date + ' ' + event.time.split('-')[0]);
+                    const endDateTime = new Date(event.date + ' ' + event.time.split('-')[1]);
+
+                    const startDate = formatDate(startDateTime);
+                    const endDate = formatDate(endDateTime);
+                    const eventTitle = 'Ca làm ' + event.shift;
+
+                    const eventUrl = `${googleCalendarUrl}&text=${encodeURIComponent(eventTitle)}&dates=${startDate}/${endDate}`;
+                    
+                    window.open(eventUrl, '_blank');
+                }
+            });
+        }
+
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            return `${year}${month}${day}T${hours}${minutes}00Z`;
+        }
+    </script>
+</body>
+</html>
